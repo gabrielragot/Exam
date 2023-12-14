@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Information</title>
+</head>
+<body>
+    <h1>List of Students</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student[0] }}</td>
+                    <td>{{ student[1] }}</td>
+                    <td>{{ student[2] }}</td>
+                    <td>{{ student[3] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    <h2>Add a Student</h2>
+    <form id="studentForm">
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id"><br><br>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName"><br><br>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName"><br><br>
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address"><br><br>
+        <input type="submit" value="Add Student">
+    </form>
+
+    <h2>Remove a Student</h2>
+    <form id="removeStudentForm">
+        <label for="removeId">Enter ID to Remove:</label>
+        <input type="text" id="removeId" name="removeId"><br><br>
+        <input type="submit" value="Remove Student">
+    </form>
+
+    <script>
+        // Function to handle form submission for adding a student
+        document.getElementById('studentForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission behavior
+
+            const formData = new FormData(this);
+
+            fetch('/add_student', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload(); // Reload the page on success to update the list
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Function to handle form submission for removing a student
+        document.getElementById('removeStudentForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission behavior
+
+            const formData = new FormData(this);
+
+            fetch('/remove_student', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload(); // Reload the page on success to update the list
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
